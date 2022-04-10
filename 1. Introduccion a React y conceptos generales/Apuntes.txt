@@ -1,0 +1,53 @@
+Introduccion a React y conceptos generales
+
+¿Qué aprenderemos en esta sección?
+¿Qué es React?
+Conceptos generales
+Babel
+JSX
+
+Daremos nuestros primeros pasos y una pequeña aplicación que nos ayudará a perderle el miedo a React rápidamente
+
+
+1. ¿Que es React?
+React es una libreria que nos permite crear aplicaciones
+Al ser una liberia nos permite pegarla en el HTML de nuestra pagina y comenzar a trabajar con React. No es la forma tradicional de hacerlo pero es posible.
+React esta hecho para trabajar con aplicaciones de todo tipo de magnitud. Aplicaciones sencillas, intermedias o sumamente robustas con alto nivel de interactividad.
+Es una libreria declarativa, lo que hace facil seguir los patrones de diseño y crear interfaces de usuario interactivas.
+Es eficiente, al hacer un cambio solamente renderiza ese elemento y no renderiza toda la pagina.
+Trabaja de manera predecible, porque toda la informacion fluye en una sola via. Nos ayuda a prevenir mutaciones involuntarias o impredecibles.
+Trabaja orientada a componentes. Los componentes son pequeñas piezas de código encapsuladas que pueden tener estado o no. Dividimos la aplicacion en pequeños componentes/piezas sencillas y faciles de mantener que permiten un codigo sencillo.
+Permite trabajar del lado del servidor. Server-Side Node.
+Podemos crear aplicaciones moviles con React Native.
+Podemos crear aplicaciones de escritorio utilizando Electron.
+
+¿Como luce un codigo de React?
+const divRoot = document.getElementById("root");
+ReactDOM.render(<h1>Hola Mundo</h1>, divRoot);
+O
+const divRoot = document.getElementById("root");
+const h1TAg = <h1>Hola Mundo</h1>
+ReactDOM.render(h1TAg, divRoot);
+
+La mezcla de JavaScript y HTML es conocida como JSX que es JavaScript + XML.
+Tranquilamente podriamos escribir el codigo anterior de la siguiente manera: const h1Tag = document.CreateElement('h1', null, "Hola Mundo");
+
+
+2. Primeros pasos en React
+Para poder ejectuar/aplicar JSX en JavaScript vamos a necesitar un compilador como babel. Babel se va a encargar de la traducción de un codigo moderno (En nuestro caso JSX) a un codigo soportado por cualquier navegador web (Nuestro caso JS). 
+
+
+3. Introduccion a Babel
+Sitio Oficial: https://babeljs.io/
+Babel nos permite a nostoros utilizar caracteristicas actuales de JavaScript y poder utilizar ese codigo inclusive en navegadores web que aún no soportan las ultimas caracteristicas del lenguaje. De esta manera podemos aprovechar al maximo el codigo de JavaScript sin preocuparnos mucho en la compatibilidad de los navegadores web.
+Babel funciona en el background cuando creamos nuestras aplicaciones de React.
+
+Probar en la pagina
+    const suma = `1 + 1 = ${1+1}`;
+
+    const restAPI {
+        //personajes = ['Goku', 'Vegeta'];
+    };
+    consola.log(restAPI.personajes?.length);
+
+React con el JSX elimina la necesidad de Babel, pero si trabajamos con archivos JS con React implicitamente vamos a utilizar Babel.

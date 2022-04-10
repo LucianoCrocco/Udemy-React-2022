@@ -1,0 +1,26 @@
+Introduccion a JavaScript moderno 
+
+Generar la base sobre JavaScript
+Constantes y variables Let
+Template String
+Objetos literales
+Arreglos
+Desestructruación * (sumamente importante)
+Promesas
+Fetch API
+Ternarios
+Async - Await
+
+Mi objetivo aquí es que tengamos las bases que nos ayuden a que podamos diferenciar fácilmente qué es propio de React y qué es propio de JavaScript. Estos conceptos y ejercicios nos ayudarán a suavizar la curva de aprendizaje de React.
+Para trabajar estos conceptos vamos a montar una aplicacion de React.
+
+
+1. Inicio de proyecto - Bases de JavaScript
+Para iniciar con nuestra app de React debemos tener instalado nodeJS y npm (Node Package Manager).
+Seguir las instrucciones de la siguiente pagina: https://create-react-app.dev/
+
+
+2. Variables y constantes.
+Vamos a utilizar constantes para almacenar en memoria datos que no van a cambiar en el transcurso de la ejecucion. 
+let para variables que si pueden llegar a cambiar. 
+var no se utiliza ya que es una mala practica y puede conllegar un monton de problemas su implementacion en proyectos a gran escala.
