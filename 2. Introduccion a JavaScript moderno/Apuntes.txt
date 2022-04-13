@@ -5,7 +5,7 @@ Constantes y variables Let
 Template String
 Objetos literales
 Arreglos
-Desestructruación * (sumamente importante)
+Desestructuración * (sumamente importante)
 Promesas
 Fetch API
 Ternarios
@@ -20,7 +20,33 @@ Para iniciar con nuestra app de React debemos tener instalado nodeJS y npm (Node
 Seguir las instrucciones de la siguiente pagina: https://create-react-app.dev/
 
 
-2. Variables y constantes.
+2. Variables y constantes
 Vamos a utilizar constantes para almacenar en memoria datos que no van a cambiar en el transcurso de la ejecucion. 
-let para variables que si pueden llegar a cambiar. 
+let para variables que si pueden llegar a cambiar. Son variables de scope
 var no se utiliza ya que es una mala practica y puede conllegar un monton de problemas su implementacion en proyectos a gran escala.
+
+3. Template Strings
+Los template strings permiten concatenar variables dentro de un string de manera mas facil. Se utiliza el operador `` y para colocar una variables dentro del mismo utilizamos la sintaxis ${VARIABLE}.
+También reconoce los saltos de linea, operaciones de JavaScript, resultados de funciones, etc.
+
+4. Objetos literales
+Los objetos literales tambien son conocidos como diccionarios en otros lenguajes. En general estos objetos funcionan de manera clave:valor.
+Los objetos literales son aquellos que en consola aparecen con las llaves {}. Los objetos comparten todos un Prototype, que son una serie de parametros, propiedades, metodos, etc.
+Para copiar los valores de un objeto entre otros tenemos que recordar que hacer una asignacion = va a apuntar la variable nueva a la direccion de memoria del objeto a copiar, lo que afecte a una variable va a afectar a la otra. Para evitar este invonveniente utilizaremos el Spread Operator {...Objeto} que va a copiar los valores dentro del objeto.
+
+5. Arreglos
+Documentacion map: https://developer.mozilla.org/es/docs/web/javascript/reference/global_objects/array/map
+Un arreglo es una coleccion de informacion que se encuentra dentro de una misma variable. Es dinamica y no generica. Los array utilizan las llaves [] para identificarse en la consola.
+array = new Array(CANTIDAD)
+array = new Array() -> Da un warning
+array = [] -> Soluciona el warning
+
+6. Funciones
+Las funciones declaradas explicitamente pueden ser sobre escritas con valores nuevos.
+Por ejemplo:
+function Saludar(nombre) {return `Hola, ${nombre}`};
+saludar = 30;
+Puede generar conflictos, va a mostrar 30 si hacemos un log de la variable saludar pero nos va a advertir que es una funcion.
+Con las funciones declaradas podemos evitar este tipo de sobreescrituras y en vez de un warning nos va a romper el programa con un error.
+
+7. Desestructuración de objetos
