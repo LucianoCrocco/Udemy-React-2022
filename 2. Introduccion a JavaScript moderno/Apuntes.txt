@@ -1,5 +1,7 @@
 Introduccion a JavaScript moderno 
 
+Documentacion general: https://developer.mozilla.org/es/
+
 Generar la base sobre JavaScript
 Constantes y variables Let
 Template String
@@ -49,4 +51,41 @@ saludar = 30;
 Puede generar conflictos, va a mostrar 30 si hacemos un log de la variable saludar pero nos va a advertir que es una funcion.
 Con las funciones declaradas podemos evitar este tipo de sobreescrituras y en vez de un warning nos va a romper el programa con un error.
 
-7. Desestructuración de objetos
+7. Desestructuración de objetos/arreglos o Asignación destructurante
+Documentacion: https://developer.mozilla.org/es/docs/web/javascript/reference/operators/destructuring_assignment
+La sintaxis de desestructuración es una expresión de JavaScript que permite desempacar valores de arreglos o propiedades de objetos en distintas variables.
+
+8. Import, export y funciones comunes de arreglos
+Documentacion: https://developer.mozilla.org/es/docs/web/javascript/reference/global_objects/array/find
+https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Statements/export
+https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Statements/import
+https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+Para importar archivos JavaScript a mi archivo actual utilizamos el comando import {NOMBRE_EXPORT} form 'PATH_RELATIVO';
+Para exportar un archivo este tiene que tener export en cada modulo a exportar.
+
+9. Multiples exportaciones y exportaciones por defeto
+Distintas maneras:
+export const  owners = ['DC', 'Marvel'];
+export default heroes;
+export {
+    heroes as default,
+    owner
+}
+
+10. Promesas
+Documentacion: https://developer.mozilla.org/es/docs/web/javascript/reference/global_objects/promise
+Una promesa es un objeto que dentro tiene dos callbacks. Es un objeto que representa la terminación o el fracaso de una operación asíncrona.
+Mientras la promesa no haya terminado de ejecutar el codigo se encuentra en estado de pendiente. Una vez ejecutado el codigo si se puede resolver ejecutamos el callback resolve, resolve(OBJETO A PASARLE AL THEN); utilizamos la funcion .then() para procesar la información del resolve, en caso de que no se haya podido procesar ejecutamos el callback rejected, rejected(OBJETO A PASARLE AL CATH);  utilizaremos la funcion .catch() para procesar la informacion del rejected. Existe el .finally() que va a ejecutar el codigo al final de la promesa sea cual sea su estado.
+
+11. Fetch API
+https://developer.mozilla.org/es/docs/Web/API/Fetch_API
+La API Fetch proporciona una interfaz para recuperar recursos (incluso a través de la red).
+Esta basado en Promesas, por lo cual tiene un response y un reject internos.
+
+12. Async-Await
+async crea una función asincrona, esta funcion asincrona no va a bloquear el event loop/stack y cuando termine se va a mostrar el codigo de la funcion async. Si tenemos que recibir informacion que puede llegar a tardar varios segundos es importante aplicar este concepto para que la página no se cuelge.
+
+Si una función depende de otra asincrona ésta función debera ser asincrona también (ya que al depender de otra asincronia no se ejecuta en secuencia) y al llamar a la función asincrona original ponemos un await delante de la función para indicarle que espere a que termine el proceso y después continue con el código restante.
+
+13. Operador de asignación ternario
+Sintaxis: CONDICION ? TRUE : FALSE
