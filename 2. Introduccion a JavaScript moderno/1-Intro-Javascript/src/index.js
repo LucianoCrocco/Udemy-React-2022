@@ -1,6 +1,3 @@
-import fetch from "/home/luciano/.node_modules/node_modules/node-fetch/src/index.js";
-
-
 const api_key = "Gqmh1Vt5CDRSIfZxED6UZApWI2ozHjtd";
 
 const peticion = fetch(`https://api.giphy.com/v1/gifs/random?api_key=${api_key}`);

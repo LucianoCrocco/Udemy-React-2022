@@ -61,7 +61,8 @@ https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Statements/export
 https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Statements/import
 https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 Para importar archivos JavaScript a mi archivo actual utilizamos el comando import {NOMBRE_EXPORT} form 'PATH_RELATIVO';
-Para exportar un archivo este tiene que tener export en cada modulo a exportar.
+Para exportar un archivo este tiene que tener export en cada modulo a exportar. Lo mismo si importamos tiene que ser con el nombre de cada export.
+Si importamos un archivo por defecto no hace falta especificar el mismo nombre del export, podemos ponerle el nombre que querramos.
 
 9. Multiples exportaciones y exportaciones por defeto
 Distintas maneras:
