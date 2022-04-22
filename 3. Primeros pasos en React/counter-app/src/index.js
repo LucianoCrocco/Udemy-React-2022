@@ -9,6 +9,6 @@ import './index.css';
 const divRoot = document.querySelector("#root");
 const root = createRoot(divRoot);
 
-root.render(<CounterApp />);
+root.render(<CounterApp value={5} />);
 
 //root.render(<PrimeraApp saludo="Hola Mundo"/>);
