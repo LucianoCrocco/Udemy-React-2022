@@ -92,3 +92,8 @@ https://developer.mozilla.org/es/docs/Glossary/Wrapper
 Enzyme fue discontinuado, vamos a seguir con la siguiente libreria: https://testing-library.com/docs/react-testing-library/intro/ - Viene por defecto en React 18.
 Un snapshot es una fotografia (JSON) del componente renderizado. Las snapshots son muy utiles ya que nos permiten saber que hay dentro de un componente y su estructura.
 Las snapshots son muy utiles ya que si, por ejemplo, hicimos cambios en el componente que no debian hacerse y que nos salte un error ya que para renderizarlos debiamos tener cierto comportamiento. Si testeamos el componente cuando lo hicimos, tiempo despues volvemos a testearlo y la snapshot falla quiere decir que a ese componente le hicimos cambios en algun punto. 
+Al recuperar un int de un snapshot este se devuelve como un string.
+
+7. Simulacion de botones
+https://testing-library.com/docs/guide-events/
+Recuperamos el html y le pasamos la siguiente nomenclatura: fireEvent.EVENTO(HTML);

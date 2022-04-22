@@ -38,7 +38,7 @@ Ejemplo de useEffect:
 Si en el arreglo no enviamos nada por defecto se ejecuta una unica vez.
 En el arreglo se puede ejecutar una evaluacion. Por ejemplo el valor que le pasemos al useEffect si cambia que vuelva a enviarse. Puedo tener algo como [value] y si ese value !== value se vuelve a lanzar el useEffect, como se ve se compara con si mismo para saber si cambio y se tiene que ejecutar.
 
-4. Clases en React
+4. Clases CSS en React
 Como class es una palabra reservada de JavaScript vamos a utilizar className para colocar CSS en el JSX.
 
 5. Encoding para peticiones

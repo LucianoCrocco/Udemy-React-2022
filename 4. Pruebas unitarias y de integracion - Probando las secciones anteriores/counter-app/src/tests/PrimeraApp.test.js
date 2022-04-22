@@ -1,15 +1,16 @@
 import React from "react";
 import PrimeraApp from "../PrimeraApp";
 import {render, screen} from "@testing-library/react"
-//import {ShallowRenderer} from "rect-test-renderer/shallow";
+import "@testing-library/jest-dom"
+import "@testing-library/dom"
 
 describe('Pruebas en <PrimeraApp />', () => {
-    /*
+    
     test('Debe mostrar el mensaje "Hola, Soy Goku"', () => {
         const saludo = "Hola, Soy Goku";
-        const view = render(<PrimeraApp saludo={saludo} />);
-        expect(view.getByText(saludo)).toBeInTheDocument();
-    })*/
+        render(<PrimeraApp saludo={saludo} />);
+        expect(screen.getByText(saludo)).toBeInTheDocument();
+    })
 
     test('Debe de mostrar <PrimeraApp /> correctamente', () => {
         const saludo = 'Hola, Soy Goku';
