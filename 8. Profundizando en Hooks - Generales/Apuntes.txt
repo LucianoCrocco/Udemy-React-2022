@@ -1,0 +1,46 @@
+Profundizando en Hooks - Generales
+
+¿Qué veremos en esta sección?
+
+Profundizar en el tema de los Hooks
+Crear otros customHooks
+useState
+useCounter - Personalizado
+useEffect y sus precauciones
+useRef
+useFetch - Personalizado + optimizaciones
+useLayoutEffect
+Memo
+useMemo
+useCallback
+
+Estos son los Hooks relativamente simples, aún hay mas que explicaremos más adelante, pero en esta sección nos enfocaremos en estos trabajos y para qué nos pueden servir.
+
+Adicionalmente estaremos dejando las bases para lo que será una sección de pruebas sumamente interesante después.
+
+¿Que es un hook?
+Definicion Documentacion:
+Los Hooks son funciones que te permiten “enganchar” el estado de React y el ciclo de vida desde componentes de función. Los hooks no funcionan dentro de las clases — te permiten usar React sin clases. (No recomendamos reescribir tus componentes existentes de la noche a la mañana, pero puedes comenzar a usar  Hooks en los nuevos si quieres).
+React proporciona algunos Hooks incorporados como useState. También puedes crear tus propios Hooks para reutilizar el comportamiento con estado entre diferentes componentes. Primero veremos los Hooks incorporados.
+
+1. useState
+Documentacion: https://es.reactjs.org/docs/hooks-intro.html - https://es.reactjs.org/docs/hooks-overview.html
+
+Video explicativo: https://www.youtube.com/watch?v=4pO-HcG2igk
+
+Un hook es una función especial de React. Se utilizan para hacer reactivo los componentes, es decir, que se renderize una parte del componente cuando utilicemos el hook.
+
+useState Es normalmente utilizada para establecer el valor a una variable. Contiene una variable y una funcion en un array de 2 posiciones. La primera posicion sera un valor X y la segunda un setter para cambiar el valor que tiene en su primera posicion el array de useState. 
+const [VALOR_ACTUAL, FUNCION_SETTER] = useState(value); Desestructurando el array.
+
+useState puede desestructurar objetos para manejar mas de un estado dentro de un setState.
+Ejemplo:
+  const [counter, setCounter] = useState({counter1: 10, counter2: 20})
+
+  const {counter1, counter2} = counter;
+
+  const handleAdd = () => {
+    setCounter({...counter, counter1: counter1 + 1});
+  }
+
+Como muestro en el ejemplo, utilizo el spread operator para que al volver a asginar el objet no pierda/mantener el estado de los demas y después recién realizo la acción sobre el objeto que quiero.
