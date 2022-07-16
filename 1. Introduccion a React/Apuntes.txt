@@ -50,4 +50,5 @@ Probar en la pagina
     };
     consola.log(restAPI.personajes?.length);
 
-React con el JSX elimina la necesidad de Babel, pero si trabajamos con archivos JS con React implicitamente vamos a utilizar Babel.
+React con el JSX utiliza implicitamente Babel para transpilar el codigo a un standard  
+entendible para todos los navegadores.
