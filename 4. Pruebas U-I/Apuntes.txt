@@ -16,7 +16,7 @@ Comandos útiles en la terminal para pruebas
 Revisar elementos renderizados en el componente
 Simular eventos
 
-Esta sección de pruebas es sumamente importante porque nos dará la base de las pruebas que estaremos haciendo durante el curso, las pruebas irán creciendo en complejidad, por lo que les recomiendo que nos aseguremos de comprender bien todos estos conceptos.
+Esta sección de pruebas es sumamente importante porque nos dará la base de las pruebas que estaremos haciendo durante el curso, las pruebas irán creciendo en complejidad,
 
 
 1. Introducción a las pruebas unitarias y de integracion
@@ -32,8 +32,8 @@ Principalmente unitarias-----------
 Las pruebas de integracion deberían confirmar la interaccion de los pequeños componentes probados de manera unitaria.
 
 AAA
-Arrange: Preparamos el estado inicial del elemento a probar.
-Act: Aplicamos acciones o estímulos al elemento.
+Arrange: Preparamos el estado inicial del sujeto a probar.
+Act: Aplicamos acciones o estímulos al sujeto de pruebas.
 Asserts: Observar el comportamiento resultante. Comprobar que los resultados sean los esperados.
 
 Mitos
@@ -44,26 +44,32 @@ Es una pérdida de tiempo: En parte si lo son, pero solo si hacemos pruebas de c
 Hay que probar todo: Puede tomar tanto tiempo o más que lo que tardamos en crear la aplicación. Por lo tanto a final de cuentas hay que probar la ruta critica y si hay tiempo otras característias.
 
 2. Inicio de la sección - Pruebas sobre lo aprendido anteriormente 
-Vamos a utilizar el recurso dado por el instructor. Son ejercicios realizados en la sección de JavaScript.
+En las secciones de pruebas vamos a utilizar los recursos dados por el instructor. Son ejercicios realizados en la sección de JavaScript.
 
 3. Mi primera prueba
-Una manera de estructurar los directorios y los archivos de pruebas es generar una carpeta test y dentro los archivos DEBEN tener la extension .test.js ya que es lo que va a buscar el test suit para correr las pruebas.
+https://jestjs.io/
+En Vite no tenemos la configuracion de ninguna testing library. Vamos a instalar el framework de JEST, Jest es un framework que sirve para hacer pruebas en aplicaciones de JavaScript y todo lo relacionado a JavaScript. Tambien vamos a trabajar con React Testing Library, no se remplazan mutuamente, eventualmente vamos a trabajar con una configuracion de los dos.
+En el package.json vamos a configurar la entrada a la suite de los test con la siguiente linea en los scripts: "test": "jest"
+
+Una manera de estructurar los directorios y los archivos de pruebas es generar una carpeta test en el mismo nivel que src y dentro los archivos DEBEN tener la extension .test/spec.js ya que es lo que va a buscar el test suit para correr las pruebas. La idea es que la carpeta test genere una especie de "espejo" de la carpeta src o cualquier carpeta donde queramos correr tests. En tests vamos a tener todos los archivos con el mismo nombre pero con la extension .test.js/jsx y ahi vamos a importar las funciones que queremos probar de la carpeta src.
 
 Con una terminal vamos a ir al directorio donde se encuentra nuestro .test.js y vamos a ejecutar npm run test, por default va a ejecutar todos los test que encuentre a partir de la raíz. Si hay un unico test lo puedo hacer desde la raíz, si hay mas de un test pero separados en distintas carpetas puedo ingresar a una de esas carpetas y ejecutarlo. Si tengo muchos test en una misma carpeta padre debo poner el nombre. Por default va a buscar los .test.js asi que con solo el nombre me alcanza. 
 Tambien puedo utilzar los snippets del a suit para filtrar las pruebas a partir de la raíz donde me encuentro.
-El nombre "test" puede ser renombrado dentro del JSON de package en la seccion de scripts, cambiandolo por otro nombre. Realmente estamos ejecutando ese script que viene precargado con configuraciones basicas/standard para realizar pruebas con JEST (libreria muy utilizada para pruebas en react que viene por defecto al hacer npx create-react-app my-app). El JEST lo podemos mosificar si no queremos trabajar con las configuraciones por default.
-Las hay activo un comando de pruebas al guardar cambios en el test ejecutado este se vuelve a lanzar.
-En general dentro de la carpeta test deberiamos tener el nombre de los directorios para simular donde estan contenidos realmente.
+El nombre "test" puede ser renombrado dentro del JSON de package en la seccion de scripts, cambiandolo por otro nombre. Realmente estamos ejecutando ese script que viene precargado con configuraciones basicas/standard para realizar pruebas con JEST. 
+Si al script de JEST la agregamos -watchAll vamos a entrar a una suite de test. Ej: "test": "jest --watchAll"
 
-Una prueba basica es utilizar dentro de nuestro .test.js el metodo test del JEST ("NOMBRE_QUE_ESPERA", CALLBACK);
+Una prueba basica es utilizar, dentro de nuestro .test.js, el metodo test del JEST ("NOMBRE_QUE_ESPERA", CALLBACK);
 ejemplo:
 test ('Esta es mi primera prueba - debe ser true', ()=>{});
 
 Si queremos probar una funcion debemos exportarla para poder ejecutarla dentro del test.
 
-3. Jest - Expect - toBe
-Documentación: https://jestjs.io/ - https://jestjs.io/docs/expect
+3. Jest - Expect - toBe - Otros tipos en la documentacion
+Documentación: https://jestjs.io/ - https://jestjs.io/docs/expect - https://www.npmjs.com/package/@types/jest
+Instalando @types/jest como dependencia de desarrollo vamos a tener disponible el intellisense. 
+ToEqual compara los valores dentro de un objeto, toBe compara posiciones de memoria de un objeto o valores de primitivos.
 Puedo agrupar mas pruebas con el describe. 
+
 Ejemplo:
 describe('Pruebas en el archivo NOMBRE', () => { 
     test ('NOMBRE PRUEBA - QUE ESPERA', ()=>{
@@ -75,21 +81,66 @@ describe('Pruebas en el archivo NOMBRE', () => {
         expect(mensaje).toBe(mensaje2);
     });
 
-    TEST('OTRO TEST'), () =({
+    TEST('OTRO TEST'), () => ({
         //AAA
     });
 });
 
+Para hacer pruebas en archivos con codigo "moderno" vamos a tener que seguir configurando Jest si utilizamos Vite, necesitamos babel para transpilar el codigo. Debemos instalar: npm install --save-dev babel-jest @babel/core @babel/preset-env. Luego tenemos que crear un archivo en el root de nuestro proyecto llaamdo "babel.config.cjs" y pegar lo siguiente: 
+module.exports = {
+  presets: [['@babel/preset-env', {targets: {node: 'current'}}]],
+};
+
+El test suit ejecuta todo el archivo importado, no solo que se exporta. Si tenemos un console.log fuera de un functional component exportado tambien lo va a ejecutar.
+
 4. Pruebas asincronas
 Documentación: https://jestjs.io/docs/asynchronous
-Para realizar un test asincrono podemos pasarle por parametros el callback done. El done le va a decir a mi JEST/Test Suit cuando debe de terminar la prueba y que espere a su ejecucion. La idea del done es ejecutarlo una vez terminada la prueba asincronica. 
-Si bien en el curso muestra como usar el done en una prueba que devuelve una promesa la documentación aclara que el done debe utilizarse en caso de ejecutar un callback, y si utilizamos promesas utilizar pruebas asincronas. Leer la documentacion.
+Para realizar un test asincrono podemos pasarle por parametros al test el callback done. El done le va a decir a mi JEST/Test Suit cuando debe de terminar la prueba y que espere a su ejecucion. La idea del done es ejecutarlo una vez terminada la prueba asincronica. 
+
+Ejemplo:
+test('Debe de retornar un heroe', (done) => {
+    const id = 1;
+    getHeroeByIdAsync(id)
+    .then(() => {
+        //Logica
+        done();
+    });
+})
+
+
+Podemos utilizar async await haciendo asincrono el callback del test, ahorrandonos utilizar el done.
+
+Ejemplo:
+test('', async () => {
+    await getImagen();
+})
+
 
 5. Pruebas sobre componentes de React
 https://developer.mozilla.org/es/docs/Glossary/Wrapper
 
-6. React Testing Library -> Esperando actualizacion del curso.
-Enzyme fue discontinuado, vamos a seguir con la siguiente libreria: https://testing-library.com/docs/react-testing-library/intro/ - Viene por defecto en React 18.
+6. React Testing Library
+https://testing-library.com/ - https://jestjs.io/docs/tutorial-react
+React Testing Library es muy bueno para trabajar con el DOM. Vamos a poder hacer simulaciones de eventos que hariamos de forma manual.
+JEST esta orientada a hacer aserciones y mocks de las funciones que voy a utilizar. 
+
+Para trabajar con esta libreria en Vite vamos a tener que generar ciertas configuraciones.
+Creamos una archivo jest.config.js en la raiz del proyecto y vamos a darle los siguientes argumentos. Es importante que todo lo que configuremos este instalado.
+module.exports = {
+    testEnvironment : 'jest-environment-jsdom',
+    setupFiles : ['./jest.setup.js']
+}
+Puedo tener un archivo setup de Jest para tener ciertos modulos que instalemos disponibles para Jest. Por ejemplo en el curso se descarga un fetch desde npm ya que antes de Node 18 no habia soporte nativo de fetch.
+Por ultimo en babel.config.cjs tenemos que tener lo siguiente:
+module.exports = {
+    presets: [
+        ['@babel/preset-env', {targets: {esmodules : true}}],
+        ['@babel/preset-react', {runtime: 'automatic'}]
+    ],
+};
+Todo lo que tengamos de paquetes tenemos que estar seguros de que este instalado
+
+
 Un snapshot es una fotografia (JSON) del componente renderizado. Las snapshots son muy utiles ya que nos permiten saber que hay dentro de un componente y su estructura.
 Las snapshots son muy utiles ya que si, por ejemplo, hicimos cambios en el componente que no debian hacerse y que nos salte un error ya que para renderizarlos debiamos tener cierto comportamiento. Si testeamos el componente cuando lo hicimos, tiempo despues volvemos a testearlo y la snapshot falla quiere decir que a ese componente le hicimos cambios en algun punto. 
 Al recuperar un int de un snapshot este se devuelve como un string.

@@ -121,71 +121,134 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 En el HTML vamos a renderizar practicamente todo dentro del div root. El nombre del div lo podemos cambiar.
 ¿Por qué renderizamos dentro de un div? https://stackoverflow.com/questions/56705154/why-do-we-use-divroot-instead-of-body
 
-Utilizamos ReactDOM porque nos ofrece otras caracteristicas, entre las cuales nos va permitir empezar a crear nuestro arbol de componentes y eso a su vez nos permite comunicarnos entre componentes de una manera sencilla.
+ReactDOM es una herramienta que nos permite renderizar React (React Native por ejemplo utiliza otra), entre sus caracteristicas nos permite empezar a crear nuestro arbol de componentes y eso a su vez nos permite comunicarnos entre componentes de una manera sencilla.
 
 6. Nuestro primer componente
 En react tenemos dos tipos de componentes, los basados en clases y los basados en funciones. React hoy en dia esta empujando a trabajar orientado a funciones, por ello vamos a trabajar mucho con funciones.
 Estas funciones se llaman Functional Components, antes se llamaban Stateless Functional Components, porque no podian manejar estados o no podian manejar estados de la manera que hacian las clases. Pero desde que React introdujo los Hooks ahora el codigo de los Functional Components es mucho mas fácil de leer y de mantener.
 
+La idea es tener los componentes en una carpeta "components" dentro de src. React deja que hagas lo que quieras (esto es un problema en grandes proyectos, sobre todo si trabajas con gente. Por ello vamos a seguir convenciones). El nombre del archivo tambien es en Pascal Case.
+
 Los componentes se esperan que devuelvan algo que le sirva a la renderizacion de HTML.
+
+Es normal ver un "return (//CODIGO);", esto se hace para que sea mas legible como se va a comportar el componente renderizado.
+Ejemplo;
+export const App = () => {
+    return (
+    <h1>Hola mundo!</h1>
+    );
+}
+
 
 root.render(<COMPONENTE/>); Asi vamos a renderizar un Functional Component en el root.
 
-import './index.css'; Asi vamos a importar y vincular un archivo CSS a un js.
+import './NOMBRE.css'; Asi vamos a importar y vincular un archivo CSS a un js. Importa indicar la extension.
+
+Las funciones que no sean vitales para el functional component se recomienda dejarlas por fuera de la funcion que renderiza React.
 
 7. Retornar elementos en el Componente - Fragment
-Con React.Fragment o importando {Fragment} de react vamos a poder retornar mas de una etiqueta HTML envuelta en un fragmento. Esto nos resuelve el problema de tal vez tener que tener un div con muchas etiquetas contenidas y que esos divs no los vayamos a utilizar.
+Con React.Fragment o importando {Fragment} de react vamos a poder retornar mas de una etiqueta HTML envuelta en un fragmento, sin tener que englobarlo en una etiqueta padre. Esto nos resuelve el problema de tal vez tener que crear un div que contenga etiquetas, ese div estaria de mas y su unica funcion seria que haya un "nodo padre" para que pueda renderizar nuestra logica, lo que haria que se llene el DOM con div sin funcionamiento mas que el anteriormente mencionado entre otros problemas.
 Ejemplo:
-<Fragment>
+return (<Fragment>
     <h1>Hola Mundo</h1>
     <p>Mi primera aplicación</p>
-</Fragment>
+</Fragment>);
 
-Tambien poniendo <> y </> React lo interpreta como si fuese un fragmento.
-<>
+Tambien poniendo <> y </> React lo interpreta como si fuese un fragmento, nos ahorra la importacion de Fragmentz.
+return (<>
     <h1>Hola Mundo</h1>
     <p>Mi primera aplicación</p>
-</>
+</>);
+
+Un Fragmento es basicamente un agrupador de otros elementos JSX. React tiene una regla de que siempre si tengo mas de un elemento JSX debo tener un elemento padre, los fragmentos nos permiten tener ese nodo padre sin tener que generar un elemento en el DOM. Si utilizaramos un div si se renderezaria y generaria los problemas ya mencionados.
 
 8. Impresión de variables en el HTML
-Para renderizar constantes dentro de JSX vamos a utilizar las llaves {VARIABLE}. Puede contener valores primitivos como string, char, int, float, etc. Si le pasamos un array va a imprimir de manera separada todos los valores que tiene dentro. No renderiza booleanos. No renderiza objetos salvo que lo manipulemos con un JSON.stringify y manipularlo como JSON.
+Para renderizar constantes dentro de JSX vamos a utilizar las llaves {VARIABLE}. Puede contener valores primitivos como string, char, int, float, expresiones (X+X, X*X...), etc. Si le pasamos un array va a imprimir de manera separada todos los valores que tiene dentro. No renderiza booleanos. No renderiza objetos salvo que lo manipulemos con un JSON.stringify o accedamos a un atributo del objeto.
+Puede renderizar el resultado de funciones sincronas que coincidan con los tipos permitidos. Las funciones asincronas no se pueden renderizar.
 
 9. Comunicación entre componentes
 Hay un concepto fundamental en React que son las propiedades que son enviadas a los componentes. Se las conocen cono properties pero le ponen la abreviatura de props.
 props son las propiedades enviadas del padre hacia los componentes hijos.
 Las props son objetos vacios si no se envia nada.
-Para enviar props, al momento de renderizar un componente podemos enviar propiedades. Ejemplo: root.render(<PrimeraApp saludo="Hola, Soy Goku"/>); 
-Lo que se envia como props es un JSON.
-Puedo acceder a una property recibiendo un argumento en mi Functional Component y con el nombre que le asigne el operador '.'NOMBRE_PROPERTY. Normalmente se utiliza la desestructuracion y no el operador . para ingresar al valor.
+Las props se envian como argumentos a la hora de renderizar un componente.
+Si queremos expresiones/que se respete el tipo debemos colocar {}. Por ejemplo sin llaves un numero seria de tipo string y no int.  
+Puedo acceder a una property recibiendo un argumento en mi Functional Component y con el nombre que le asigne el operador '.'NOMBRE_PROPERTY. Normalmente se utiliza la desestructuracion y no el operador . para ingresar al valor. 
+Si mi property esperaba un valor puedo obligar a que reciba algo (lo veremos mas adelante) o puedo poner un valor por defecto en caso de que no se envie. Tambien puedo definirles el tipo si no utiizamos TypeScript.
 
-Si mi property esperaba un valor puedo obligar a que reciba algo (lo veremos mas adelante) o puedo poner un valor por defecto en caso de que no se envie.
+Ejemplo: 
+En el archivo principal:
+ReactDOM.createRoot(document.getElementById("root")).render(
+    <React.StrictMode>
+        <App />
+        <FirstApp title={"Hola, soy Vegeta"} />
+    </React.StrictMode>
+);
+En un componente:
+export const FirstApp = ( {title} ) => {//Codigo}
 
 10. PropTypes
-Podemos forzar que la persona que utilice el componente enviandole una prop para su correcto. Una manera es preguntar si el prop existe o no, en caso que no enviar un error.  Otra manera, mucho mas eficiente, es importar PropTypes from prop-types. Prop-types lo vamos a definir debajo de la funcion y le vamos a indicar como si fuese un objeto clave:valor que nombre de variable espera y que tipo de valor. Si ese valor se espara si o si y no puede ser un undefined vamos a utilizar .isRequired
+https://www.npmjs.com/package/prop-types
+Si trabajamos en VITE tenemos que instalar el paquete desde npm.
+Podemos forzar el prop sea de un tipo especifico y que sea obligatorio. Una manera de que sea obligatorio es preguntar si el prop existe o no, en caso de que no enviar un error (No es recomendado y no se deberia hacer).  Otra manera, mucho mas eficiente, es importar PropTypes del paquete prop-types. El Prop-types lo vamos a definir debajo del Functional Component y le vamos a indicar como si fuese un objeto clave:valor que nombre de propiedad espera y que tipo de valor. Si ese valor se espera si o si y no puede ser un undefined vamos a utilizar .isRequired (es opcional).
+Si indicamos que es requerido o el tipo que le pasamos es incorrecto el error, por default, va a salir en la consola de desarrollo del navegador, no va a romper nuestra aplicacion.
 Ejemplo:
-FUNCION_COMPONENTE.propTypes = {
-    NOMBRE_VARIABLE : PropTypes.TIPO_ESPERADO.isRequired
+import PropTypes from "prop-types";
+COMPONETE_FUNCIONAL.propTypes = {
+    NOMBRE_PROPIEDAD : PropTypes.TIPO_ESPERADO.isRequired
 }
 
 11. DefaultProps
-DefaultProps nos da la posiblidad de no tener que inicalizar valores por defecto cuando recibo props. Tambien nos sirve para que el prop quede registrado y exista, ya que si pasamos un valor por defecto ese prop NO existe fuera del ambito de la funcion.
+DefaultProps nos da la posiblidad de no tener que inicializar valores por defecto cuando desestructuro el prop recibido en mi Functional Component. Tambien nos sirve para que el prop quede registrado y exista, ya que si pasamos un valor por defecto ese prop NO existe fuera del ambito de la funcion. Si no se envia la propiedad la default va a ser tomada.
+Los defaultProps entran antes de los propTypes, por lo que si no proporciono una propiedad requeridad pero tengo una default no va a saltar ningun error. Si puede haber un error si el tipo default no coincide con el tipo definido en propType.
+Se definen, al igual que los PropTypes, luego del Functional Component.
 Esta contenido en la importacion de React.
-PrimeraApp.defaultProps = {
-    subtitulo : "Soy un subtitulo"
+COMPONETE_FUNCIONAL.defaultProps = {
+    NOMBRE_PROPIEDAD : "Soy un subtitulo"
 }
 
 El snippet rafcp crea un Functional Component con PropTypes
 
 12. Evento click (Eventos en general)
 Documentacion: https://es.reactjs.org/docs/events.html
+Se adjuntan en la etiqueta a renderizar. Utilizamos onEVENTO={EXPRESION}. Dentro de los {} vamos a poder referenciar la funcion a utilizar.
+Los eventos envian un objeto con la informacion del mismo.
+Ejemplo:
+<button onClick={ event => console.log(event)}>
+    +1
+</button>
 
-13. useState - Hook
+Las funciones no deben estar definidas dentro de la etiqueta.
+Si paso una referencia automaticamente todos los parametros van a pasar a la funcion, si queremos pasar un valor que no se pasa por defecto ahi si tendriamos que explicitarlo
+Ejemplo:
+<h2> { value } </h2>
+<button onClick={logEvent}>
+    +1
+</button>
+
+<h2> { value } </h2>
+<button onClick={ (event, value) => logEvent(event, value)}>
+    +1
+</button>
+
+Si las funciones no tiene ninguna interacion con el componente, deberiamos dejarla por fuera del scope. Por ejemplo al logear el evento deberia estar fuera del scope del Functional Component. De esta manera nos ahorramos espacio en memoria al renderizar nuevamente un componente.
+
+Si queremos cambiar el estado de un componente vamos a tener que avisarle a React de estos cambios para que vuelva a renderizar el componente.
+  
+13. Hooks - useState 
 Documentacion: https://es.reactjs.org/docs/hooks-intro.html - https://es.reactjs.org/docs/hooks-overview.html
 Video explicativo: https://www.youtube.com/watch?v=4pO-HcG2igk
 Un hook es una función especial de React. Se utilizan para hacer reactivo los componentes, es decir, que se renderize una parte del componente cuando utilicemos el hook.
-useState Es normalmente utilizada para establecer el valor a una variable. Contiene una variable y una funcion en un array de 2 posiciones. La primera posicion sera un valor X y la segunda un setter para cambiar el valor que tiene en su primera posicion el array de useState.
+Los hooks empiezan por la palabra "use", por regla todos los hooks llevan esto en el comienzo de su nombre.
+Los hooks se utilizan con constantes para que no podamos mutar el valor.
+useState es normalmente utilizado para establecer el valor a una variable. Contiene una variable y una funcion en un array de 2 posiciones. La primera posicion sera un valor X y la segunda un setter para cambiar el valor que tiene en su primera posicion el array de useState.
+La funcion setter suele llevar el prefijo "set" y el nombre en PascalCase del valor.
+Cuando se llama al set le estamos diciendo a react que el valor cambio y que lo tiene que volver a renderizar.
+El set puede recibir un valor fijo en sus parametros y solo se ejecutaria una vez, por mas que intentemos lanzar el evento varias veces (Al ser un valor fijo React sabe que no hace falta volver a renderizar) y si no tenemos el valor de la variable en  podemos recibirla por parametros de la siguiente forma: setNOMBRE((VALOR_ACTUAL) => //LOGICA);
+Desde React 18 si llamo mas de una vez la funcion setter se van a ejecutar todas en el scope y despues va a renderizar, anteriormente ejecutaba una y renderizaba el componente, y luego la otra y así.
 
-const [VALOR_ACTUAL, FUNCION_SETTER] = useState(value); Desestructurando el array.
+const [VALOR_ACTUAL, FUNCION_SETTER] = useState(VALOR_A_ASIGNAR); Desestructurando el array. El valor a asignar es opcional.
+
+Cuando se renderiza un componente por primera vez o por la intervencion de un hook, se vuelva a cargar/ejecutar TODO lo que haya dentro del Functional Component. Hay que tener cuidado con este comportamiento porque, por ejemplo, podemos estar llamando una API que nos devuelve lo mismo siempre que cambia el estado del componente, lo cual es un comportamiento no deseado.
 
 Definicion Documentacion:
 Los Hooks son funciones que te permiten “enganchar” el estado de React y el ciclo de vida desde componentes de función. Los hooks no funcionan dentro de las clases — te permiten usar React sin clases. (No recomendamos reescribir tus componentes existentes de la noche a la mañana, pero puedes comenzar a usar Hooks en los nuevos si quieres).
