@@ -1,0 +1,16 @@
+Listado de fuentes para consultar
+
+React: https://es.reactjs.org/
+Babel: https://babeljs.io/
+Create-React-App: https://create-react-app.dev/
+Vite: https://vitejs.dev/
+Modo estricto React: https://es.reactjs.org/docs/strict-mode.html
+¿Por que se renderiza en un div root?: https://stackoverflow.com/questions/56705154/why-do-we-use-divroot-instead-of-body
+Expresiones y operadores: https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Expressions_and_Operators
+PropTypes: https://www.npmjs.com/package/prop-types
+Eventos en React: https://es.reactjs.org/docs/events.html
+Hooks: https://es.reactjs.org/docs/hooks-intro.html
+UseState Hook: https://es.reactjs.org/docs/hooks-overview.html -
+Como re-renderiza React: https://blog.isquaredsoftware.com/2020/05/blogged-answers-a-mostly-complete-guide-to-react-rendering-behavior/ - https://www.reddit.com/r/reactjs/comments/ryen56/deleted_by_user/
+JEST: https://jestjs.io/ 
+React Testing Library: https://testing-library.com/docs/react-testing-library/intro/

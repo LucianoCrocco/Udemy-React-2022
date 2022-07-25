@@ -47,8 +47,8 @@ Hay que probar todo: Puede tomar tanto tiempo o más que lo que tardamos en crea
 En las secciones de pruebas vamos a utilizar los recursos dados por el instructor. Son ejercicios realizados en la sección de JavaScript.
 
 3. Mi primera prueba
-https://jestjs.io/
-En Vite no tenemos la configuracion de ninguna testing library. Vamos a instalar el framework de JEST, Jest es un framework que sirve para hacer pruebas en aplicaciones de JavaScript y todo lo relacionado a JavaScript. Tambien vamos a trabajar con React Testing Library, no se remplazan mutuamente, eventualmente vamos a trabajar con una configuracion de los dos.
+https://jestjs.io/ - https://testing-library.com/docs/react-testing-library/intro/
+En Vite no tenemos la configuracion de ninguna testing library. Vamos a instalar el framework de JEST, Jest es un framework que sirve para hacer pruebas en aplicaciones de JavaScript y todo lo relacionado a JavaScript. Tambien vamos a trabajar con React Testing Library, no se remplazan mutuamente, son colaborativos. Eventualmente vamos a trabajar con una configuracion de los dos. Utilizaremos JEST para ejecutar las de pruebas y codigo JS, y si necesitamos testear el comportamiento de un componente vamos a utilizar ese suit de JEST con las herramientas que Testing Library nos proporciona. Como se dijo es colaborativa, se van a utilizar las dos. 
 En el package.json vamos a configurar la entrada a la suite de los test con la siguiente linea en los scripts: "test": "jest"
 
 Una manera de estructurar los directorios y los archivos de pruebas es generar una carpeta test en el mismo nivel que src y dentro los archivos DEBEN tener la extension .test/spec.js ya que es lo que va a buscar el test suit para correr las pruebas. La idea es que la carpeta test genere una especie de "espejo" de la carpeta src o cualquier carpeta donde queramos correr tests. En tests vamos a tener todos los archivos con el mismo nombre pero con la extension .test.js/jsx y ahi vamos a importar las funciones que queremos probar de la carpeta src.
@@ -119,19 +119,26 @@ test('', async () => {
 5. Pruebas sobre componentes de React
 https://developer.mozilla.org/es/docs/Glossary/Wrapper
 
-6. React Testing Library
-https://testing-library.com/ - https://jestjs.io/docs/tutorial-react
+6. Configuracion del profesor para React Testing Library en Vite
+https://testing-library.com/ - https://jestjs.io/docs/tutorial-react - https://lenguajejs.com/automatizadores/introduccion/commonjs-vs-es-modules/
+
+El instructor del curso no deja muy en claro porque hacemos las configuraciones y los cambios. https://jestjs.io/docs/configuration
+Por deduccion y por lo que dijeron en el curso voy a suponer que babel.config.cjs es para transpilar el codigo codigo moderno de las pruebas que hagamos a una sintaxis standard que JEST entienda. En jest.config.cjs vamos a setear ciertas configuraciones para los test, como por ejemplo el ambiente en el cual se van a desarrollar y que se va a encargar de ejecutarlos (Si necesitamos renderizar DOM de React configuramos el ambiente de Testing Library x ejemplo). jest.setup.cjs son modulos instalados los cuales vamos a poder acceder de manera global en JEST, en caso de que algun modulo de un codigo a testear no este disponible de manera nativa.
+
+Utilizamos la extension cjs en los archivos para utilizar module.exports.
+
 React Testing Library es muy bueno para trabajar con el DOM. Vamos a poder hacer simulaciones de eventos que hariamos de forma manual.
 JEST esta orientada a hacer aserciones y mocks de las funciones que voy a utilizar. 
 
-Para trabajar con esta libreria en Vite vamos a tener que generar ciertas configuraciones.
-Creamos una archivo jest.config.js en la raiz del proyecto y vamos a darle los siguientes argumentos. Es importante que todo lo que configuremos este instalado.
+Para trabajar con esta libreria en Vite vamos a tener que generar ciertas configuraciones. Vamos a cambiar el test enviaroment para que acepte renderizar virtualmente el DOM.
+Creamos una archivo jest.config.cjs en la raiz del proyecto y vamos a darle los siguientes argumentos. Es importante que todo lo que configuremos este instalado.
 module.exports = {
     testEnvironment : 'jest-environment-jsdom',
-    setupFiles : ['./jest.setup.js']
+    setupFiles : ['./jest.setup.cjs']
 }
-Puedo tener un archivo setup de Jest para tener ciertos modulos que instalemos disponibles para Jest. Por ejemplo en el curso se descarga un fetch desde npm ya que antes de Node 18 no habia soporte nativo de fetch.
-Por ultimo en babel.config.cjs tenemos que tener lo siguiente:
+Puedo tener un archivo setup de Jest para que ciertos modulos que instalemos sean configurados y esten disponibles de manera global para Jest. Por ejemplo en el curso se descarga un fetch desde npm ya que antes de Node 18 no habia soporte nativo de fetch.
+
+Por ultimo en babel.config.cjs vamos a configurar los ambientes, para ello tenemos que tener lo siguiente:
 module.exports = {
     presets: [
         ['@babel/preset-env', {targets: {esmodules : true}}],
@@ -139,12 +146,104 @@ module.exports = {
     ],
 };
 Todo lo que tengamos de paquetes tenemos que estar seguros de que este instalado
+¿Porque cambiamos de @babel/preset-env "node: 'current'" a @babel/preset-env "esmodules: true"? -> Duda y respuesta de un profesor ayudante
+Lo que ocurre es que estamos cambiando de javascript Commonjs a ESmodule. Ambos son estándares para el funcionamiento de los módulos.
 
+Los cambios significativos más recientes fueron a partir de ES6, tiene un enfoque más moderno y es compatible con todos los navegadores y con node.
 
-Un snapshot es una fotografia (JSON) del componente renderizado. Las snapshots son muy utiles ya que nos permiten saber que hay dentro de un componente y su estructura.
+7. Testing en componentes de React
+https://testing-library.com/docs/react-testing-library/cheatsheet
+Debemos importar ciertas dependencias para poder trabajar dentro del suit de JEST, por ejemplo import {render} from '@testing-library/react'.
+
+render actualiza el objeto Screen que es propio de React Testing Library. También devuelve objetos que exponen ciertas propiedades, uno de ellos es el container, que es muy parecido a un document object model (Un nodo de HTML). Este container nos va a servir para tomar una snapshot si lo ejecutamos por primera vez, y para comparar con un snapshot si lo habiamos ejecutado anteriormente (si queremos actualizar el snapshot apretamos la u).
+
+Usualmente al hacer un snapshot se crea una carpeta al mismo nivel de donde hicimos la prueba.
+
+Un snapshot es una fotografia del componente renderizado. Las snapshots son muy utiles ya que nos permiten saber que hay dentro de un componente y su estructura. 
+Dentro del snapshot se va a escribir una especie de HTML como si fuese la pagina en un navegador y se va a escribir todas las veces que hagamos un .toMatchSnapshot(). Si analizamos el contenido dentro nos daremos cuenta que tiene una manera de relacionarse cada HTML escrito con cada test. Solo utilizando el container se va a poder generar la snapshot de manera correcta, screen no sirve. Se recomienda trabajar con screen para las propiedades como veremos mas adelante.
 Las snapshots son muy utiles ya que si, por ejemplo, hicimos cambios en el componente que no debian hacerse y que nos salte un error ya que para renderizarlos debiamos tener cierto comportamiento. Si testeamos el componente cuando lo hicimos, tiempo despues volvemos a testearlo y la snapshot falla quiere decir que a ese componente le hicimos cambios en algun punto. 
 Al recuperar un int de un snapshot este se devuelve como un string.
 
-7. Simulacion de botones
+Las propiedades que expone render nos van a ayudar muchisimo a la hora de encontrar texto, ids, etc. Dentro de un componente. Por ejemplo getByText("STRING") nos va a recuperar un string y en base a ello podemos hacer la comparacion que necesitemos.
+Algunas veces vamos a generar data-attributes en el HTML de nuestros componentes para poder recuperarlos y evaluarlos. Pra ello existe getByTestId("DATA-ATTRIBUTE");
+
+Ejemplo:
+import {render} from '@testing-library/react'
+test("Debe hacer match con el snapshot", () => {
+    const {container} = render( <FirstApp /> );
+    expect(container).toMatchSnapshot();
+})
+test("Debe existir el titulo", () => {
+    const titulo = "No hay titulo";
+    const {container, getByText} = render( <FirstApp /> );
+    expect(getByText(titulo)).toBeTruthy();
+
+    const h1 = container.querySelector("h1"); -> NO ES RECOMENDADO, DEBERIAMOS TENER UN DATA ATTRIBUTE EN EL HTML. CUANDO PASA A PRODUCCION ESTO SE DEBE BORRAR.
+    expect(h1.innerHTML).toContain(titulo);
+})
+
+Si tenemos una constante que se repite mucho, como el titulo en el ejemplo anterior, puedo colocarla al nivel del describe asi la puedo utilizar en todos mis test.
+Podemos no desestructurar las propiedades y utilizar el metodo screen. Este metodo va a tomar dentro suyo todo los elementos renderizados en el scope del test y tiene asociado las propiedades. Es una especie de "DOM" virtual y dentro adjunta las propiedades.
+Se recomienda trabajar con screen en vez de desestructurar todo.
+Con screen.debug() podemos ver el estado actual del DOM.
+
+Ejemplo con screen:
+import {render, screen} from '@testing-library/react';
+describe('Pruebas en <FirstApp />', () => { 
+
+    const titulo = "No hay titulo";
+    const subtitulo = "No hay subtitulo";
+
+    test("Debe hacer match con el snapshot", () => {
+        const {container} = render( <FirstApp /> );
+        expect(container).toMatchSnapshot();
+    })
+
+    test("Debe mostrar el mensaje 'No hay titulo'", () => {
+        render( <FirstApp /> );
+        expect(screen.getByText(titulo)).toBeTruthy();
+    })
+
+    test("Debe mostrar el titulo en un h1", () => {
+        render( <FirstApp /> );
+        expect(screen.getByRole("heading", {level : 1}).innerHTML).toContain(titulo);
+    })
+
+    test("Debe mostrar el subtitulo 'No hay subtitulo'", () => {
+        render( <FirstApp /> );
+        expect(screen.getByText(subtitulo).innerHTML).toContain(subtitulo);
+    })
+
+})
+
+8. Simulacion de botones
 https://testing-library.com/docs/guide-events/
-Recuperamos el html y le pasamos la siguiente nomenclatura: fireEvent.EVENTO(HTML);
+Importamos de React Testing Library el fireEvent. FireEvent puede disprar muchos eventos del DOM. Necesitamos recuperar el html y seguimos la siguiente nomenclatura: fireEvent.EVENTO(HTML);
+
+Para poder recuperar el HTML de una mejor manera se recomienda asociar las etiquetas con un aria-label="NOMBRE". Con las propiedades de screen podemos recuperar este tipo de atributos HTML para asegurarnos de que estamos recuperando la etiqueta correcta y no lo que matchee el texto que contiene una etiqueta (Que puede ser muy volatil). En ciertas opciones tenemos el atributo "name" que esta relacionado con un aria-label, el texto dentro si no existe aria label, entr otros.
+
+You can query the returned element(s) by their accessible name. The accessible name is for simple cases equal to e.g. the label of a form element, or the text content of a button, or the value of the aria-label attribute. It can be used to query a specific element if multiple elements with the same role are present on the rendered content.
+
+En los ejemplos tenemos distintas maneras de recuperar un elemento del DOM.
+
+Ejemplos:
+test('Debe de incrementar con el boton +1', () => {
+    render( <CounterApp value={initialValue} /> );
+    fireEvent.click(screen.getByText('+1'));
+    expect(screen.getByText("11")).toBeTruthy();
+})
+
+En mi JSX
+<button aria-label='btn-reset' onClick={handleReset}>
+    Reset
+</button>
+
+test('Debe de funcionar el boton de reset ', () => {
+    render( <CounterApp value={355} /> );
+    fireEvent.click(screen.getByText('+1'));
+    fireEvent.click(screen.getByText('+1'));
+    fireEvent.click(screen.getByText('+1'));
+    fireEvent.click(screen.getByText('Reset'));
+    fireEvent.click(screen.getByRole("button", {name : "btn-reset"}))
+    expect(355).toBeTruthy();
+})

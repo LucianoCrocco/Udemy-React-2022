@@ -1,0 +1,98 @@
+GifExpertApp - Aplicación
+
+¿Qué veremos en esta sección?
+Custom Hooks
+Fetch hacia un API
+Comunicación entre componentes
+Clases de CSS
+Animaciones
+Enviar métodos como argumentos
+Crear listados
+keys
+Giphy
+
+Esta es una aplicación pequeña pero muy ilustrativa que explica cómo utilizar React + customHooks para poder resolver necesidades en específico que podremos re-utilizar después.
+
+1. Documentación para estructurar archivos y comienzo de Gif Expert App
+https://hackernoon.com/structuring-projects-and-naming-components-in-react-1261b6e18d76
+https://es.reactjs.org/docs/faq-structure.html
+https://es.acervolima.com/como-utilizar-el-principio-de-responsabilidad-unica-en-reactjs/
+https://kata-software.com/es/publicaciones/principios-solid-en-programacion#:~:text=SOLID%20es%20un%20acr%C3%B3nimo%20acu%C3%B1ado,eficiente%20y%20f%C3%A1cil%20de%20mantener.
+
+Desde React 17 no hace falta importar react por todos lados ya que se sabe que es una aplicacion de react, tan solo en el main.jsx debemos tenerlo importado. Además Vite configura un plugin para que react sea accedido globalmente. No aplica a los hooks y otros.
+
+Todas las aplicaciones de React son un conjunto de componentes, un componente tiene otros componentes dentro y así se va armando la aplicación.
+
+Puedo importar estilos haciendo import './styles.css'; Hay que tener en cuenta que, basandonos en la definicion anterior, los estilos de el/los componente/s padre/s se aplican a lo/s hijo/s.
+
+React trata de no mutar estados. Crea nuevos estados.
+
+2. Listas en React
+¿Por que map() y no forEach()?: https://stackoverflow.com/questions/47442462/reactjs-map-works-but-foreach-doesnt
+¿Porque las listas necesitan una key?: https://www.geeksforgeeks.org/reactjs-keys/#:~:text=A%20%E2%80%9Ckey%E2%80%9D%20is%20a%20special,the%20elements%20in%20the%20lists.
+https://sentry.io/answers/unique-key-prop/
+https://es.reactjs.org/docs/lists-and-keys.html
+Para un list item deberiamos usar como key el value del elemento y no el index (en caso de utilizar un array). Ya que si reformulo el array al utilizar un index es muy posible que generemos conflictos al re renderizar (React desaconseja el uso del index, al eliminar un elemento de la lista puede entrar en conflicto). Con una key asociativa nos ahorramos este problema. Las keys numericas suelen ser de bases de datos. Para React NO es lo mismo un uppercase que un lowercase.
+
+Manera de mainpular un array con useState: setCategories([...categories, 'Invincible']); De esta manera mantengo mi arreglo anterior y le agrego un nuevo elemento. Si tengo un array vacio en la primera renderizacion del useState simplemente le paso la referencia del array.
+
+3. Comunicación entre componentes 
+Para comunicarnos entre componentes podemos pasarle la referencia de las funciones (funciones, hooks, etc) del padre como prop a otro componente.
+
+Si bien una forma podria ser, por ejemplo, pasarle el setter al componente hijo y utilizarlo. Seria, tal vez, mejor tener una funcion que utilice ese setter y no pasar el setter directamente. Ambas opciones son validas, tal vez tener una funcion con el setter dentro que reciba un valor puede ser "mas descriptivo" por el nombre, no "oculte" la implementacion y sea menos dificil de comprender. Además puedo agregar validaciones en la funcion antes de utilizar el setter.
+
+Ejemplo:
+<AddCategory onNewCategory={onAddCategory} /> 
+<AddCategory setCategories = {setCategories} />
+
+https://stackoverflow.com/questions/59555534/why-is-json-asynchronous#:~:text=json()%20operation%20ends%20up,incoming%20stream%20that%20is%20asynchronous.
+Second, after the initial fetch promise is resolved, you can only read the headers of the call. After calling json(), you are asking the browser to read and parse a stream from the body. The part of parsing the json is not async, but reading the stream is, javascript needs the compete stream before pardin it, hence the await.
+From the mdn web DOCS
+Streaming involves breaking a resource that you want to receive over a network down into small chunks, then processing it bit by bit.
+
+4. useEffect
+Documentación: https://es.reactjs.org/docs/hooks-effect.html
+https://reactjs.org/docs/strict-mode.html
+https://es.reactjs.org/docs/hooks-faq.html#is-it-safe-to-omit-functions-from-the-list-of-dependencies
+Strict mode checks are run in development mode only; they do not impact the production build.
+React Stric Mode ayuda con:
+Identifying components with unsafe lifecycles
+Warning about legacy string ref API usage
+Warning about deprecated findDOMNode usage
+Detecting unexpected side effects
+Detecting legacy context API
+Ensuring reusable state
+
+useEffect es un hook de React que sirve para disparar efectos secundarios. Se entiende por efecto secundario a un proceso que queremos ejecutar cuando algo sucede. Cuando algo cambie se dispara un efecto. 
+useEffect nos permite ejecutar un codigo de manera condicional. useEffect se compone de un callback y un arreglo de dependencias.
+¿Se ejecuta useEffect después de cada renderizado? ¡Sí! Por defecto se ejecuta después del primer renderizado y después de cada actualización.
+Ejemplo de useEffect: 
+useEffect(() => {
+  getGifs();
+}, [])
+Si en el arreglo no enviamos nada por defecto se ejecuta una unica vez.
+En el arreglo se puede ejecutar una evaluacion. Por ejemplo el valor que le pasemos al useEffect si cambia que vuelva a enviarse. Puedo tener algo como [value] y si ese value !== value se vuelve a lanzar el useEffect, como se ve se compara con si mismo para saber si cambio y se tiene que ejecutar.
+useEffect no puede ser asincrono.
+
+5. Clases CSS en React
+Como class es una palabra reservada de JavaScript vamos a utilizar className para colocar CSS en el JSX.
+
+6. Encoding para peticiones
+Con el metodo encodeURI(STRING) JS se va a encargar de formatear un string con espacios o caracteres especiales y así incustrarlo en una URL.
+
+7. helpers
+Para no tener un codigo muy cargado en un componente, todo lo que sea procesar informacion no crucial, pedir informacion, etc. Lo vamos a ubicar en una carpeta helpers para esta app.
+Un ejemplo puede ser un getter de informacion, fetch a una API, etc. 
+
+8. Custom Hooks
+Los custom hooks es una forma de extraer logica de algun componente o logica que yo quiero reutilizar y extraerla de tal manera que sea sencillo utilizarla nuevamente. Pueden funcionar como Functional componentes, teniendo estado, efectos, contexto, etc.
+Los custom hooks normalmente van en un directorio llamado hooks.
+Los custom hooks llevan use al principio, por ejemplo: useFetchGifs.js
+Los custom hooks son simplemente funciones que regresan algo.
+
+9. Animaciones para CSS
+https://animate.style/
+
+10. Archivos de barril
+https://www.wake-up-neo.net/es/javascript/como-importar-un-barril-solo-por-nombre-de-carpeta/824808709/
+Cuando hagamos un import al darle el path si solo ponemos la ubiacion de la carpeta va a buscar el index.js por defecto.

@@ -1,1 +1,0 @@
-No realizo esta seccion hasta que se actualicen los testings de componentes.

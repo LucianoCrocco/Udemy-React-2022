@@ -131,7 +131,7 @@ La idea es tener los componentes en una carpeta "components" dentro de src. Reac
 
 Los componentes se esperan que devuelvan algo que le sirva a la renderizacion de HTML.
 
-Es normal ver un "return (//CODIGO);", esto se hace para que sea mas legible como se va a comportar el componente renderizado.
+Es normal ver un "return (//CODIGO);", esto se hace para que sea mas legible como se va a comportar el componente renderizado. Tambien puedo omitir las llaves y el return si solo retorno JSX y no tengo logica en el componente/funcion.
 Ejemplo;
 export const App = () => {
     return (
@@ -139,6 +139,12 @@ export const App = () => {
     );
 }
 
+export const App = () => -> Ejemplo 1 
+(
+    <h1>Hola mundo!</h1>  
+);
+categories.map(category => <GifGrid /> ) -> Ejemplo 2 
+categories.map((category) => (<GifGrid />) ) -> Ejemplo 3 
 
 root.render(<COMPONENTE/>); Asi vamos a renderizar un Functional Component en el root.
 
@@ -163,6 +169,7 @@ return (<>
 Un Fragmento es basicamente un agrupador de otros elementos JSX. React tiene una regla de que siempre si tengo mas de un elemento JSX debo tener un elemento padre, los fragmentos nos permiten tener ese nodo padre sin tener que generar un elemento en el DOM. Si utilizaramos un div si se renderezaria y generaria los problemas ya mencionados.
 
 8. Impresión de variables en el HTML
+https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Expressions_and_Operators
 Para renderizar constantes dentro de JSX vamos a utilizar las llaves {VARIABLE}. Puede contener valores primitivos como string, char, int, float, expresiones (X+X, X*X...), etc. Si le pasamos un array va a imprimir de manera separada todos los valores que tiene dentro. No renderiza booleanos. No renderiza objetos salvo que lo manipulemos con un JSON.stringify o accedamos a un atributo del objeto.
 Puede renderizar el resultado de funciones sincronas que coincidan con los tipos permitidos. Las funciones asincronas no se pueden renderizar.
 
@@ -237,6 +244,8 @@ Si queremos cambiar el estado de un componente vamos a tener que avisarle a Reac
 13. Hooks - useState 
 Documentacion: https://es.reactjs.org/docs/hooks-intro.html - https://es.reactjs.org/docs/hooks-overview.html
 Video explicativo: https://www.youtube.com/watch?v=4pO-HcG2igk
+Como re-renderiza React: https://blog.isquaredsoftware.com/2020/05/blogged-answers-a-mostly-complete-guide-to-react-rendering-behavior/ - https://www.reddit.com/r/reactjs/comments/ryen56/deleted_by_user/
+
 Un hook es una función especial de React. Se utilizan para hacer reactivo los componentes, es decir, que se renderize una parte del componente cuando utilicemos el hook.
 Los hooks empiezan por la palabra "use", por regla todos los hooks llevan esto en el comienzo de su nombre.
 Los hooks se utilizan con constantes para que no podamos mutar el valor.
@@ -255,3 +264,12 @@ Los Hooks son funciones que te permiten “enganchar” el estado de React y el 
 
 React proporciona algunos Hooks incorporados como useState. También puedes crear tus propios Hooks para reutilizar el comportamiento con estado entre diferentes componentes. Primero veremos los Hooks incorporados.
 
+No se recomienda que los hooks esten dentro de operadores condicionales, va contra los principios de los hooks y lo que React hace con ellos.
+
+
+¿Como funciona la "re-renderizacion", se actualiza todo el DOM?
+It will "re-render" the whole component, in the sense that the body of the function component will execute and return JSX elements describing what you want the UI to look like.
+However, just because a component re-renders does not mean there will be any DOM updates. If the described UI is the same as the last render output, there's nothing for React to change.
+
+Esta definicion sacada de Reddit explica, mas adelante en el curso, porque cuando hago un .map() no renderiza el navegador nuevamente todo el array, porque se necesitan keys si hago un .map() (Basicamente y muy por arriba para poder identificar que elementos cambiaron y cuales no), etc. Puedo deducir que hay un paso intermedio, una especie de DOM virtual de React, que hace las comparaciones del componente "viejo" y el "nuevo", y evalua que cambios se realizaron, y recien ahi se ejecuta el codigo en el DOM. En teoria todos los setters de los hooks una vez utilizados van a lanzar una re-renderizacion, para mas informacion leer la documentacion. 
+Desde React 18 si llamo mas de una vez la funcion setter se van a ejecutar todos en el scope y despues va a renderizar, anteriormente ejecutaba una y renderizaba el componente, y luego la otra y así.

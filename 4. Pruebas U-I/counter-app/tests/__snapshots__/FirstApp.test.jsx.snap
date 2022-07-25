@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pruebas en <FirstApp /> Debe de mostrar el titulo en un h1 1`] = `
+<div>
+  <h1>
+    No hay titulo
+  </h1>
+  <p>
+    No hay subtitulo
+  </p>
+  <p>
+    Luciano Crocco
+  </p>
+</div>
+`;
+
+exports[`Pruebas en <FirstApp /> Debe existir el titulo 1`] = `
+<div>
+  <h1>
+    No hay titulo
+  </h1>
+  <p>
+    No hay subtitulo
+  </p>
+  <p>
+    Luciano Crocco
+  </p>
+</div>
+`;
+
+exports[`Pruebas en <FirstApp /> Debe hacer match con el snapshot 1`] = `
+<div>
+  <h1>
+    No hay titulo
+  </h1>
+  <p>
+    No hay subtitulo
+  </p>
+  <p>
+    Luciano Crocco
+  </p>
+</div>
+`;

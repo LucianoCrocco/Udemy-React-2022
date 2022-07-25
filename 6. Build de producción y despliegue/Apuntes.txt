@@ -9,7 +9,7 @@ Generar build de producción de nuestra aplicación
 
 Aunque es una sección pequeña, les puede servir para desplegar infinidad de proyectos de React de forma gratuita, sin contar que tendrán respaldos de sus proyectos por si llegan a perder su trabajo que tenían localmente en su computadora.
 
+
 1. Preparación del proyecto - Github Pages
 Como hemos trabajado con el npm run test en algun momento ahora es tiempo de utilizar el npm run build. Este va a generar una carpeta build con todos los archivos y directorios que realmente utiliza nuestra aplicacion para su despliegue en un sitio web. Tambien va a recortar todos los espacios y saltos de linea para que nuestra app pese menos.
-Por defecto nuestra aplicacion debe utilizar un servidor para desplegarse ya sea un hosting o un localhost, el protocolo FILE no funciona porque utiliza importaciones, ruteo, etc.
-npm para montar un localhost: https://www.npmjs.com/package/http-server
+Por defecto nuestra aplicacion debe utilizar un servidor para desplegarse ya sea un hosting o un localhost, el protocolo FILE no funciona porque utiliza importaciones, ruteo, etc. Tenemos que agregar un "./" en todas las importaciones del HTML.
